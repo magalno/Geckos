@@ -112,9 +112,13 @@ void grid_init(uint8_t grid[][GRID_HEIGHT]){
 
 void players_init(uint8_t grid[][GRID_HEIGHT], player_t *players){
     printf("Initializing players...\t");
+    
+    // Initialize random number generator
+    time_t t;
+    srand((unsigned) time(&t));
     for (int player = 0; player < N_PLAYERS; player++){
-        players[player].pos.x = GRID_WIDTH*(player+1)/(N_PLAYERS+1);
-        players[player].pos.y = GRID_HEIGHT-1;
+        players[player].pos.x = rand() % (GRID_WIDTH/2) + (GRID_WIDTH/2)*player;
+        players[player].pos.y = rand() % (GRID_HEIGHT/2) + GRID_HEIGHT/2;
         
         players[player].dir = UP;
     }
