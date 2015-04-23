@@ -24,66 +24,53 @@ void update_player_direction(char buttons_now){
     char button_changes = buttons_now;
 
     //Player 1 controls
-    printf("dir0: %d \n", players[0].dir); 
     if(button_changes & SW_1 ) {
-        printf("Switch 1 detected\n");   //TODO:: Remove
         if(players[0].dir != RIGHT) {
             players[0].dir = LEFT;
         }
     }
     if(button_changes & SW_2) {
-        printf("Switch 2 detected\n");   //TODO:: Remove
         if(players[0].dir != DOWN) {
-        printf("SWITCH 2\n");
             players[0].dir = UP;
         }
     }
     if(button_changes & SW_3) {
-        printf("Switch 3 detected\n");   //TODO:: Remove
         if(players[0].dir != LEFT) {
             players[0].dir = RIGHT;
-            printf("dir0: %d \n", players[0].dir); 
         }
-        printf("dir1: %d \n", players[0].dir); 
     }
     if(button_changes & SW_4) {
-        printf("Switch 4 detected\n");   //TODO:: Remove
         if(players[0].dir != UP) {
             players[0].dir = DOWN;
         }
     }
     //Player 2 controls
     if(button_changes & SW_5) {
-        printf("Switch 5 detected\n");   //TODO:: Remove
         if(players[1].dir != RIGHT) {
             players[1].dir = LEFT;
         }
     }
     if(button_changes & SW_6) {
-        printf("Switch 6 detected\n");   //TODO:: Remove
         if(players[1].dir != DOWN) {
             players[1].dir = UP;
         }
     }
     if(button_changes & SW_7) {
-        printf("Switch 7 detected\n");   //TODO:: Remove
         if(players[1].dir != LEFT) {
             players[1].dir = RIGHT;
         }
     }
     if(button_changes & SW_8) {
-        printf("Switch 8 detected\n");   //TODO:: Remove
         if(players[1].dir != UP) {
             players[1].dir = DOWN;
         }
     }
     g_buttons_last = buttons_now;
-    printf("dir2: %d \n", players[0].dir);   //TODO:: Remove
 } 
 
 int gamepad_init(void){
 
-    printf("Initializing gamepad \n");
+    printf("Initializing gamepad...\t");
     
     driver = fopen("/dev/driver-gamepad", "rb");
     if(driver == NULL){
@@ -108,34 +95,33 @@ int gamepad_init(void){
         printf("ERROR: Unable to set driver settings \n");
         exit(1);
     }
-    printf("Exiting gamepad_init\n");   //TODO:: Remove
+    printf("Gamepad initialized successfully\n");
     return 0;
 }
 
 // Initialize all grid cells to zero
 void grid_init(uint8_t grid[][GRID_HEIGHT]){
-    printf("Initializing game grid...\t");   //TODO:: Remove
+    printf("Initializing game grid...\t");
     for (int row = 0; row < GRID_HEIGHT; row++){
         for (int col = 0; col < GRID_WIDTH; col++){
             grid[col][row] = CELL_FREE;
         }
     }
-    printf("Grid initialized successfully\n");   //TODO:: Remove
+    printf("Grid initialized successfully\n");
 }
 
 void players_init(uint8_t grid[][GRID_HEIGHT], player_t *players){
-    printf("Initializing players...\t");   //TODO:: Remove
+    printf("Initializing players...\t");
     for (int player = 0; player < N_PLAYERS; player++){
         players[player].pos.x = GRID_WIDTH*(player+1)/(N_PLAYERS+1);
         players[player].pos.y = GRID_HEIGHT-1;
         
         players[player].dir = UP;
     }
-        printf("Exiting players_init\n");   //TODO:: Remove
+        printf("Players initialized successfully\n");
 }
 
 int update_pos(uint8_t grid[][GRID_HEIGHT], player_t players[N_PLAYERS]){
-    //printf("Entering update_pos\n");   //TODO:: Remove
     for(int player=0; player < N_PLAYERS; player++){
         switch(players[player].dir){
             case LEFT:
@@ -155,7 +141,6 @@ int update_pos(uint8_t grid[][GRID_HEIGHT], player_t players[N_PLAYERS]){
                 return -1;
         }
         if(detect_crash(grid, players[player].pos)){
-            //printf("Detected crash\n");   //TODO:: Remove
             //handle death
             g_running = 0;
             display_fill_screen(((player+1)%2+1)*0x7FF0);
@@ -165,7 +150,6 @@ int update_pos(uint8_t grid[][GRID_HEIGHT], player_t players[N_PLAYERS]){
             display_fill_cell(GAME_PIXEL_SIZE, players[player].pos, (player+1)*0x7FF0);
         }
     }
-    //printf("Exiting update_pos\n");   //TODO:: Remove
     return 0;
 }
 

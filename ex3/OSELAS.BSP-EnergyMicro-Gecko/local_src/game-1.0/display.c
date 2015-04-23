@@ -17,21 +17,11 @@ int display_init(void){
     fbfd = open("/dev/fb0", O_RDWR);
     if(fbfd == ERROR){
         printf("Error: Failed to open file\n");
-        return ERROR;
-        //TODO:: add exit/errno action
+        exit(-1);
     }else{
         printf("Display file opened succesfully\n");
         display_fill_screen(42);
     }
-    
-    /* Get screen info from framebuffer driver 
-    if(ioctl(fd, FBIOGET_VSCREENINFO, &screen_info) == ERROR){
-        printf("Error: Failed to get screen info\n");
-        //TODO:: add exit/errno action
-    }else{
-        printf("Screeninfo received succesfully\n");
-    }
-    */
     
     /* Map the screen pixel values directly to memory */
     screen_pxl_vals =(uint16_t*) mmap(
@@ -44,10 +34,9 @@ int display_init(void){
             0); 
     if (screen_pxl_vals == MAP_FAILED){     //MAP_FAILED = ((void*) -1)
         printf("Error: Failed mapping screen to memory\n");
-        return -1;
-        //TODO:: add exit/errno action      
+        exit(-1);
     }
-    printf("Display initialized successfully\n");   //TODO:: Remove
+    printf("Display initialized successfully\n");
     return 0;
     
 }
@@ -62,7 +51,6 @@ void display_fill_screen(uint16_t value){
     rect.dy = 0;
     rect.width = 320;
     rect.height = 240;
-    printf("Trying to fill screen\n");   //TODO:: Remove
     ioctl(fbfd, 0x4680, &rect);
 }
 
